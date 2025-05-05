@@ -1,0 +1,37 @@
+// src/constants/translations.js
+export default {
+  it: {
+    title: 'Orari delle Preghiere',
+    timer: 'Prossima preghiera tra:',
+    date: 'Seleziona data:',
+    today: 'Oggi',
+    selectCity: 'Seleziona una città',
+    searchCity: 'Cerca città',
+    changeCity: 'Cambia città',
+    nextPrayer: 'Prossima preghiera',
+    fajr: 'Fajr',
+    sunrise: 'Shoroq',
+    dhuhr: 'Dhuhr',
+    asr: 'Asr',
+    maghrib: 'Maghrib',
+    isha: 'Isha',
+    searchResults: 'Risultati di ricerca',
+    recentCities: 'Città recenti',
+    enterCityName: 'Inserisci il nome della città',
+    search: 'Cerca',
+    back: 'Indietro',
+    noResults: 'Nessun risultato trovato',
+    searching: 'Ricerca in corso...',
+    networkError: 'Errore di rete. Riprova più tardi.',
+    prayerTimesError: 'Errore nel caricamento degli orari. Riprova più tardi.',
+    clearAllData: 'Cancella città recenti',
+    clearDataTitle: 'Cancella città recenti',
+    clearDataConfirm: 'Sei sicuro di voler cancellare tutte le città salvate? Questa azione non può essere annullata.',
+    cancel: 'Annulla',
+    confirm: 'Conferma',
+    success: 'Successo',
+    dataCleared: 'Tutti i dati sono stati cancellati',
+    error: 'Errore',
+    clearDataError: 'Si è verificato un errore durante la cancellazione dei dati'
+  }
+};

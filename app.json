@@ -1,28 +1,41 @@
 {
   "expo": {
     "name": "Athan",
-    "slug": "Athan",
-    "version": "1.0.0",
+    "slug": "athan-app",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#3498db",
+      "imageSize": "medium"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "userInterfaceStyle": "light"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+      "versionCode": 3,
+      "userInterfaceStyle": "light",
+      "softwareKeyboardLayoutMode": "pan",
+      "package": "com.osama_fth.athanapp"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
+    },
+    "plugins": [
+      "expo-localization"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "571489ba-8b63-4c4d-a84f-0c577e043c0d"
+      }
     }
   }
 }
