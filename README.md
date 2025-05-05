@@ -7,8 +7,6 @@
 
 **Athan** è un'applicazione mobile che fornisce orari precisi per le preghiere islamiche in qualsiasi città del mondo. Con un'interfaccia utente elegante e intuitiva, l'app ti aiuta a non perdere mai una preghiera.
 
-![Screenshot dell'app](https://via.placeholder.com/800x400?text=Screenshot+App+Athan)
-
 ## ✨ Funzionalità principali
 
 - 🔍 **Ricerca città** in tutto il mondo
