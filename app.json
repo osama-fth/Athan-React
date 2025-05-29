@@ -7,6 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "sdkVersion": "53.0.0",
     "splash": {
       "image": "./assets/icon.png",
       "resizeMode": "contain",
@@ -29,9 +30,7 @@
     "web": {
       "favicon": "./assets/icon.png"
     },
-    "plugins": [
-      "expo-localization"
-    ],
+    "plugins": [],
     "extra": {
       "eas": {
         "projectId": "571489ba-8b63-4c4d-a84f-0c577e043c0d"

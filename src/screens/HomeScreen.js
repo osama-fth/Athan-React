@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Dimensions, SafeAreaView, StatusBar, Platform } from 'react-native';
+import { 
+  View, Text, StyleSheet, TouchableOpacity, ScrollView, 
+  ActivityIndicator, Dimensions, SafeAreaView, StatusBar, Platform 
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from '../utils/TranslationContext';
@@ -8,8 +11,7 @@ import { getHijriDate } from '../utils/dateUtils';
 import Colors from '../constants/Colors';
 import { useFocusEffect } from '@react-navigation/native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Ionicons } from '@expo/vector-icons'; 
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import ClockComponent from '../components/ClockComponent';
 import TimerComponent from '../components/TimerComponent';
 import { Animated } from 'react-native';
@@ -388,13 +390,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navbarIcon: {
-    marginRight: 8, // Aumenta questo valore per maggiore distanza
-  },
-  navbarLogo: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-    tintColor: 'white', // Rende il logo bianco per adattarlo alla navbar colorata
+    marginRight: 8,
   },
   // Stili Timer Card
   timerCard: {
@@ -420,24 +416,6 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: 'bold',
     color: Colors.timer,
-  },
-  // Stili Date Selector
-  dateContainer: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  datePickerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
   },
   datePickerButton: {
     flex: 1,
@@ -596,21 +574,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.title,
     marginRight: 10,
-  },
-  datePickerWrapper: {
-    flex: 1,
-    marginRight: 10,
-    overflow: 'hidden',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-  },
-  datePicker: {
-    width: '100%',
-    height: 44, // Altezza fissa per garantire una buona visualizzazione
-    alignSelf: 'center',
   },
 });
 

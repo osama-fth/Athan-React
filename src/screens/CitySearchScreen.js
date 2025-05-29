@@ -1,5 +1,5 @@
 // src/screens/CitySearchScreen.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, FlatList,
   ActivityIndicator, StyleSheet, SafeAreaView, Alert
@@ -9,7 +9,6 @@ import { useTranslation } from '../utils/TranslationContext';
 import prayerService from '../services/prayerService';
 import Colors from '../constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const CitySearchScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -17,13 +16,9 @@ const CitySearchScreen = ({ navigation }) => {
   const [results, setResults] = useState([]);
   const [recentCities, setRecentCities] = useState([]);
   const [loading, setLoading] = useState(false);
-  const insets = useSafeAreaInsets();
   
-  useEffect(() => {
-    loadRecentCities();
-  }, []);
-  
-  const loadRecentCities = async () => {
+  // Ottimizzazione: usa useCallback per le funzioni che vengono passate come props
+  const loadRecentCities = useCallback(async () => {
     try {
       const saved = await AsyncStorage.getItem('recentCities');
       if (saved) {
@@ -32,28 +27,37 @@ const CitySearchScreen = ({ navigation }) => {
     } catch (error) {
       console.error('Errore nel caricamento delle città recenti:', error);
     }
-  };
+  }, []);
   
-  const searchCities = async () => {
-    if (query.trim().length < 2) return;
+  useEffect(() => {
+    loadRecentCities();
+  }, [loadRecentCities]);
+  
+  // Ottimizzazione: debounce per la ricerca
+  const searchCities = useCallback(async () => {
+    const trimmedQuery = query.trim();
+    if (trimmedQuery.length < 2) {
+      setResults([]);
+      return;
+    }
     
     setLoading(true);
     try {
-      const cities = await prayerService.searchCity(query);
+      const cities = await prayerService.searchCity(trimmedQuery);
       setResults(cities);
     } catch (error) {
       console.error('Errore nella ricerca delle città:', error);
+      Alert.alert(t('error'), t('networkError'));
     } finally {
       setLoading(false);
     }
-  };
+  }, [query, t]);
   
-  const handleSelectCity = async (city) => {
+  const handleSelectCity = useCallback(async (city) => {
     try {
-      // Salva la città selezionata
       await AsyncStorage.setItem('selectedCity', JSON.stringify(city));
       
-      // Aggiorna le città recenti
+      // Ottimizzazione: evita duplicati e limita a 5 città
       const updatedRecentCities = [
         city,
         ...recentCities.filter(c => c.id !== city.id)
@@ -65,68 +69,38 @@ const CitySearchScreen = ({ navigation }) => {
       navigation.navigate('Home');
     } catch (error) {
       console.error('Errore nel salvataggio della città:', error);
+      Alert.alert(t('error'), t('clearDataError'));
     }
-  };
+  }, [recentCities, navigation, t]);
   
-  // Modifica la funzione clearAllData esistente
-  const clearAllData = async () => {
-    try {
-      Alert.alert(
-        t('clearDataTitle'),
-        t('clearDataConfirm'),
-        [
-          {
-            text: t('cancel'),
-            style: 'cancel'
+  // Ottimizzazione: semplifica clearAllData
+  const clearAllData = useCallback(async () => {
+    Alert.alert(
+      t('clearDataTitle'),
+      t('clearDataConfirm'),
+      [
+        { text: t('cancel'), style: 'cancel' },
+        {
+          text: t('confirm'),
+          onPress: async () => {
+            try {
+              await prayerService.clearAllCache();
+              await AsyncStorage.multiRemove(['selectedCity', 'recentCities']);
+              setRecentCities([]);
+              Alert.alert(t('success'), t('dataCleared'));
+            } catch (error) {
+              console.error('Errore durante la cancellazione:', error);
+              Alert.alert(t('error'), t('clearDataError'));
+            }
           },
-          {
-            text: t('confirm'),
-            onPress: async () => {
-              // 1. Cancella tutte le cache del servizio preghiere
-              try {
-                // Per accedere direttamente alla cache in memoria del timezone
-                if (prayerService.clearAllCache) {
-                  await prayerService.clearAllCache();
-                } else {
-                  // Se la funzione non esiste, aggiungiamo l'implementazione inline
-                  // Rimuovi tutte le chiavi da AsyncStorage
-                  await AsyncStorage.multiRemove([
-                    'selectedCity',
-                    'recentCities',
-                    'lastSearchQuery'
-                  ]);
-                }
-                
-                // 2. Aggiorna lo stato locale
-                setRecentCities([]);
-                
-                // 3. Notifica l'utente
-                Alert.alert(
-                  t('success'),
-                  t('dataCleared')
-                );
-              } catch (error) {
-                console.error('Errore durante la cancellazione delle cache:', error);
-                Alert.alert(
-                  t('error'),
-                  t('clearDataError')
-                );
-              }
-            },
-            style: 'destructive'
-          }
-        ]
-      );
-    } catch (error) {
-      console.error('Errore durante la cancellazione dei dati:', error);
-      Alert.alert(
-        t('error'),
-        t('clearDataError')
-      );
-    }
-  };
+          style: 'destructive'
+        }
+      ]
+    );
+  }, [t]);
   
-  const renderCityItem = ({ item }) => (
+  // Ottimizzazione: memoizza il render item
+  const renderCityItem = useCallback(({ item }) => (
     <TouchableOpacity 
       style={styles.cityItem} 
       onPress={() => handleSelectCity(item)}
@@ -136,7 +110,7 @@ const CitySearchScreen = ({ navigation }) => {
         <Text style={styles.cityName}>{item.name}</Text>
       </View>
     </TouchableOpacity>
-  );
+  ), [handleSelectCity]);
   
   return (
     <SafeAreaView style={styles.safeArea}>
